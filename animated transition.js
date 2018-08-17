@@ -30,14 +30,6 @@ function buildLine(ds) {
         .domain([minDate, maxDate])
         .range([padding + 5, w - padding]);
 
-    // tooltip
-    var tooltip = d3.select("body")
-        .append("div")
-        .attr({
-            "class": "tooltip"
-        })
-        .style("opacity", 0);
-
         
 
     var yScale = d3.scale.linear()
@@ -79,30 +71,6 @@ function buildLine(ds) {
         "fill": "none",
         "class":("path-" + ds.category)
     });
-
-    var dots = svg.selectAll("circle")
-        .data(ds.monthlySales)
-        .enter()
-        .append("circle")
-        .attr({
-            cx: (function (d) { return xScale(getDate(d.month)) }),
-            cy: (function (d) { return yScale(d.sales); }),
-            r: 4,
-            "fill": "#666666",
-            "class": "circle-" + ds.category
-        })
-        .on("mouseover", function(d){
-            tooltip.transition()
-                .duration(500)
-                .style("opacity", 0.85)
-            tooltip.html("<strong>Sales: $" + d.sales + "K</strong>")
-                .style("left", (d3.event.pageX) + "px")
-                .style("top", (d3.event.pageY - 28) + "px");
-        })
-        .on("mouseout", function(d){
-            tooltip.transition()
-                .style("opacity", 0);
-        });
     
 }
 
@@ -149,28 +117,6 @@ function updateLine(ds) {
         .attr({
             d: lineFun(ds.monthlySales), //we have to refernce the sales data array
         });
-
-    var dots = svg.selectAll(".circle-" + ds.category)
-        .transition()
-        .duration(500)
-        .ease("easeQuad")
-        .attr({
-            cx: (function (d) { return xScale(getDate(d.month)) }),
-            cy: (function (d) { return yScale(d.sales); }),
-            r: 4,
-        });/*
-        .on("mouseover", function(d){
-            tooltip.transition()
-                .duration(500)
-                .style("opacity", 0.85)
-            tooltip.html("<strong>Sales: $" + d.sales + "K</strong>")
-                .style("left", (d3.event.pageX) + "px")
-                .style("top", (d3.event.pageY - 28) + "px");
-        })
-        .on("mouseout", function(d){
-            tooltip.transition()
-                .style("opacity", 0);
-        });*/
     
 }
 
